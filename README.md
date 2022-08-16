@@ -1,5 +1,5 @@
 # File-Upload
 
 
--To install the dependancies
--Run  npm install
+#To install the dependancies
+#Run  npm install
