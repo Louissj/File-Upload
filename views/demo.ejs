@@ -1,0 +1,486 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Insurance Application</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../public/css/style.css">
+</head>
+<body>
+
+              <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+                <a class="navbar-brand" href="#">Insurance</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/api/user/users/1">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/account/account/1">Account</a>
+                      </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/api/agent/agent/1">Agent</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/lob/lob/1">LOB</a>
+                      </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/policy/policy/1">Policy</a>
+                      </li>
+                  </ul>
+                </div>
+              </nav>
+    <div class="container">
+        <div class=" nav justify-content-center" style="margin-top:100px;">
+         <div class="card border-warning mb-3 " style="max-width: 20rem;">
+                <div class="card-header"><h5>Upload csv file</h5></div>
+                <div class="card-body">
+                        <form action="/api/Upload" method="post" enctype="multipart/form-data">
+                            <input type="file" name="csv"><br><br>
+                         <div class="text-center"><button type="submit" class="btn btn-lg btn-primary">submit</button></div>   
+                        </form>
+                </div>
+          </div>
+    </div><br>
+    <%if(data){%>
+    <div>
+        <table class="table table-hover table-responsive table-stripped" style="width: auto" > 
+                <thead>
+                    <tr class="bg-primary">
+                        <th>S.no</th>
+                        <th style="padding-right:2em;padding-left:2em;">policy_number</th>
+                        <th style="padding-right:2em;padding-left:2em;">email</th>
+                        <th style="padding-right:2em;padding-left:2em;">gender</th>
+                        <th style="padding-right:2em;padding-left:2em;">firstname</th>
+                        <th style="padding-right:2em;padding-left:2em;">city</th>
+                        <th style="padding-right:2em;padding-left:2em;">phone</th>
+                        <th style="padding-right:2em;padding-left:2em;">address</th>
+                        <th style="padding-right:2em;padding-left:2em;">state</th>
+                        <th style="padding-right:2em;padding-left:2em;">zip</th>
+                        <th style="padding-right:2em;padding-left:2em;">dob</th>
+                        <th style="padding-right:2em;padding-left:2em;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%for(var i=0;i< data.length;i++){%>
+                    <tr class="text-center">
+                                  <td ><%= i+1%></td>
+                                  <td style="padding-left: 1em"><%= data[i].policy_number%></td>
+                                  <td style="padding-left: 1em"><%= data[i].email%></td>
+                                  <td style="padding-left: 1.2em"><%= data[i].gender%></td>
+                                  <td style="padding-left: 1.2em"><%= data[i].firstname%></td>
+                                  <td style="padding-left: 1.2em"><%= data[i].city%></td>
+                                  <td style="padding-left: 1em;"><%= data[i].phone%></td>
+                                  <td style="padding-right:1em;padding-left:1em;"><%= data[i].address%></td>
+                                  <td style="padding-left: 1em"><%= data[i].state%></td>
+                                  <td style="padding-left: 1em"><%= data[i].zip%></td>
+                                  <td style="padding-left: 1em"><%= data[i].dob%></td>
+                                  <td style="padding-left: 1em">
+                                    <a  class="btn border-shadow update" href="../users/edit/<%= data[i].policy_number%>">
+                                        <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+                                    </a>
+                                    <a class="btn border-shadow delete" href="../users/delete/<%= data[i].policy_number%>">
+                                        <span class="text-gradient"><i class="fas fa-times"></i></span>
+                                    </a>
+                                </td>
+
+                    </tr>
+                    <%}%>
+                    <% if (pages > 0) { %>
+                        <ul class="pagination text-center">
+                            <% if (current == 1) { %>
+                                <li class="disabled"><a>First</a></li>
+                            <% } else { %>
+                                <li><a href="/api/user/users/1">First</a></li>
+                            <% } %>
+                            <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                            <% if (i !== 1) { %>
+                                <li class="disabled"><a>...</a></li>
+                            <% } %>
+                            <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                                <% if (i == current) { %>
+                                    <li class="active"><a><%= i %></a></li>
+                                <% } else { %>
+                                    <li><a href="/api/user/users/<%= i %>"><%= i %></a></li>
+                                <% } %>
+                                <% if (i == Number(current) + 4 && i < pages) { %>
+                                    <li class="disabled"><a>...</a></li>
+                                <% } %>
+                            <% } %>
+                            <% if (current == pages) { %>
+                                <li class="disabled"><a>Last</a></li>
+                            <% } else { %>
+                                <li><a href="/api/user/users/<%= pages %>">Last</a></li>
+                            <% } %>
+                        </ul>
+                    <% } %>
+                </tbody>
+        </table>
+    </div>
+    <%}%>
+
+
+    <!-- Account Data -->
+
+    <%if(accountData){%>
+        <div>
+            <table class="table table-hover table-responsive table-stripped" style="width: auto" > 
+                    <thead>
+                        <tr class="bg-primary">
+                            <th>S.no</th>
+                            <th style="padding-right:2em;padding-left:2em;">policy_number</th>
+                            <th style="padding-right:2em;padding-left:2em;">userType</th>
+                            <th style="padding-right:2em;padding-left:2em;">account_name</th>
+                            <th style="padding-right:2em;padding-left:2em;">account_type</th>
+                            <th style="padding-right:2em;padding-left:2em;">email</th>
+                            <th style="padding-right:2em;padding-left:2em;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%for(var i=0;i< accountData.length;i++){%>
+                        <tr class="text-center">
+                                      <td ><%= i+1%></td>
+                                      <td style="padding-left: 1em"><%= accountData[i].policy_number%></td>
+                                      <td style="padding-left: 1em"><%= accountData[i].userType%></td>
+                                      <td style="padding-left: 1.2em"><%= accountData[i].account_name%></td>
+                                      <td style="padding-left: 1.2em"><%= accountData[i].account_type%></td>
+                                      <td style="padding-left: 1.2em"><%= accountData[i].email%></td>
+                                      <td style="padding-left: 1em">
+                                        <a  class="btn border-shadow update" href="../account/edit/<%= accountData[i].policy_number%>">
+                                            <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+                                        </a>
+                                        <a class="btn border-shadow delete" href="../account/delete/<%= accountData[i].policy_number%>">
+                                            <span class="text-gradient"><i class="fas fa-times"></i></span>
+                                        </a>
+                                    </td>
+    
+                        </tr>
+                        <%}%>
+                        <% if (pages > 0) { %>
+                            <ul class="pagination text-center">
+                                <% if (current == 1) { %>
+                                    <li class="disabled"><a>First</a></li>
+                                <% } else { %>
+                                    <li><a href="/api/account/account/1">First</a></li>
+                                <% } %>
+                                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                                <% if (i !== 1) { %>
+                                    <li class="disabled"><a>...</a></li>
+                                <% } %>
+                                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                                    <% if (i == current) { %>
+                                        <li class="active"><a><%= i %></a></li>
+                                    <% } else { %>
+                                        <li><a href="/api/account/account/<%= i %>"><%= i %></a></li>
+                                    <% } %>
+                                    <% if (i == Number(current) + 4 && i < pages) { %>
+                                        <li class="disabled"><a>...</a></li>
+                                    <% } %>
+                                <% } %>
+                                <% if (current == pages) { %>
+                                    <li class="disabled"><a>Last</a></li>
+                                <% } else { %>
+                                    <li><a href="/api/account/account/<%= pages %>">Last</a></li>
+                                <% } %>
+                            </ul>
+                        <% } %>
+                    </tbody>
+            </table>
+        </div>
+        <%}%>
+
+        <!-- Agent Data -->
+
+        <%if(agentData){%>
+            <div>
+                <table class="table table-hover table-responsive table-stripped" style="width: auto" > 
+                        <thead>
+                            <tr class="bg-primary">
+                                <th>S.no</th>
+                                <th style="padding-right:2em;padding-left:2em;">policy_number</th>
+                                <th style="padding-right:2em;padding-left:2em;">agent</th>
+                                <th style="padding-right:2em;padding-left:2em;">producer</th>
+                                <th style="padding-right:2em;padding-left:2em;">agency_ID</th>
+                                <th style="padding-right:2em;padding-left:2em;">company_name</th>
+                                <th style="padding-right:2em;padding-left:2em;">category_name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%for(var i=0;i< agentData.length;i++){%>
+                            <tr class="text-center">
+                                          <td ><%= i+1%></td>
+                                          <td style="padding-left: 1em"><%= agentData[i].policy_number%></td>
+                                          <td style="padding-left: 1em"><%= agentData[i].agent%></td>
+                                          <td style="padding-left: 1.2em"><%= agentData[i].producer%></td>
+                                          <td style="padding-left: 1.2em"><%= agentData[i].agency_ID%></td>
+                                          <td style="padding-left: 1.2em"><%= agentData[i].company_name%></td>
+                                          <td style="padding-left: 1.2em"><%= agentData[i].category_name%></td>
+                                          
+        
+                            </tr>
+                            <%}%>
+                            <% if (pages > 0) { %>
+                                <ul class="pagination text-center">
+                                    <% if (current == 1) { %>
+                                        <li class="disabled"><a>First</a></li>
+                                    <% } else { %>
+                                        <li><a href="/api/agent/agent/1">First</a></li>
+                                    <% } %>
+                                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                                    <% if (i !== 1) { %>
+                                        <li class="disabled"><a>...</a></li>
+                                    <% } %>
+                                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                                        <% if (i == current) { %>
+                                            <li class="active"><a><%= i %></a></li>
+                                        <% } else { %>
+                                            <li><a href="/api/agent/agent/<%= i %>"><%= i %></a></li>
+                                        <% } %>
+                                        <% if (i == Number(current) + 4 && i < pages) { %>
+                                            <li class="disabled"><a>...</a></li>
+                                        <% } %>
+                                    <% } %>
+                                    <% if (current == pages) { %>
+                                        <li class="disabled"><a>Last</a></li>
+                                    <% } else { %>
+                                        <li><a href="/api/agent/agent/<%= pages %>">Last</a></li>
+                                    <% } %>
+                                </ul>
+                            <% } %>
+                        </tbody>
+                </table>
+            </div>
+            <%}%>
+
+             <!-- LOB Data -->
+
+        <%if(lobData){%>
+            <div>
+                <table class="table table-hover table-responsive table-stripped" style="width: auto" > 
+                        <thead>
+                            <tr class="bg-primary">
+                                <th>S.no</th>
+                                <th style="padding-right:2em;padding-left:2em;">policy_number</th>
+                                <th style="padding-right:2em;padding-left:2em;">csr</th>
+                                <th style="padding-right:2em;padding-left:2em;">primary</th>
+                                <th style="padding-right:2em;padding-left:2em;">agency_ID</th>
+                                <th style="padding-right:2em;padding-left:2em;">hasActive_ClientPolicy</th>
+                                <th style="padding-right:2em;padding-left:2em;">Applicant_ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%for(var i=0;i< lobData.length;i++){%>
+                            <tr class="text-center">
+                                          <td ><%= i+1%></td>
+                                          <td style="padding-left: 1em"><%= lobData[i].policy_number%></td>
+                                          <td style="padding-left: 1em"><%= lobData[i].csr%></td>
+                                          <td style="padding-left: 1.2em"><%= lobData[i].primary%></td>
+                                          <td style="padding-left: 1.2em"><%= lobData[i].agency_ID%></td>
+                                          <td style="padding-left: 1.2em"><%= lobData[i].hasActive_ClientPolicy%></td>
+                                          <td style="padding-left: 1.2em"><%= lobData[i].Applicant_ID%></td>
+                                                 
+                            </tr>
+                            <%}%>
+                            <% if (pages > 0) { %>
+                                <ul class="pagination text-center">
+                                    <% if (current == 1) { %>
+                                        <li class="disabled"><a>First</a></li>
+                                    <% } else { %>
+                                        <li><a href="/api/lob/lob/1">First</a></li>
+                                    <% } %>
+                                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                                    <% if (i !== 1) { %>
+                                        <li class="disabled"><a>...</a></li>
+                                    <% } %>
+                                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                                        <% if (i == current) { %>
+                                            <li class="active"><a><%= i %></a></li>
+                                        <% } else { %>
+                                            <li><a href="/api/lob/lob/<%= i %>"><%= i %></a></li>
+                                        <% } %>
+                                        <% if (i == Number(current) + 4 && i < pages) { %>
+                                            <li class="disabled"><a>...</a></li>
+                                        <% } %>
+                                    <% } %>
+                                    <% if (current == pages) { %>
+                                        <li class="disabled"><a>Last</a></li>
+                                    <% } else { %>
+                                        <li><a href="/api/lob/lob/<%= pages %>">Last</a></li>
+                                    <% } %>
+                                </ul>
+                            <% } %>
+                        </tbody>
+                </table>
+            </div>
+            <%}%>
+
+
+            <!-- Policy Data -->
+
+        <%if(policyData){%>
+            <div>
+                <table class="table table-hover table-responsive table-stripped" style="width: auto" > 
+                        <thead>
+                            <tr class="bg-primary">
+                                <th>S.no</th>
+                                <th style="padding-right:2em;padding-left:2em;">policy_number</th>
+                                <th style="padding-right:2em;padding-left:2em;">policy_mode</th>
+                                <th style="padding-right:2em;padding-left:2em;">premium_amount</th>
+                                <th style="padding-right:2em;padding-left:2em;">policy_type</th>
+                                <th style="padding-right:2em;padding-left:2em;">policy_start_date</th>
+                                <th style="padding-right:2em;padding-left:2em;">policy_end_date</th>
+                                <th style="padding-right:2em;padding-left:2em;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%for(var i=0;i< policyData.length;i++){%>
+                            <tr class="text-center">
+                                          <td ><%= i+1%></td>
+                                          <td style="padding-left: 1em"><%= policyData[i].policy_number%></td>
+                                          <td style="padding-left: 1em"><%= policyData[i].policy_mode%></td>
+                                          <td style="padding-left: 1.2em"><%= policyData[i].premium_amount%></td>
+                                          <td style="padding-left: 1.2em"><%= policyData[i].policy_type%></td>
+                                          <td style="padding-left: 1.2em"><%= policyData[i].policy_start_date%></td>
+                                          <td style="padding-left: 1.2em"><%= policyData[i].policy_end_date%></td>
+                                        
+                                          <td style="padding-left: 1em">
+                                            <a  class="btn border-shadow update" href="../policy/edit/<%= policyData[i].policy_number%>">
+                                                <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+                                            </a>
+                                            <a class="btn border-shadow delete" href="../policy/delete/<%= policyData[i].policy_number%>">
+                                                <span class="text-gradient"><i class="fas fa-times"></i></span>
+                                            </a>
+                                        </td>
+        
+                            </tr>
+                            <%}%>
+                            <% if (pages > 0) { %>
+                                <ul class="pagination text-center">
+                                    <% if (current == 1) { %>
+                                        <li class="disabled"><a>First</a></li>
+                                    <% } else { %>
+                                        <li><a href="/api/policy/policy/1">First</a></li>
+                                    <% } %>
+                                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                                    <% if (i !== 1) { %>
+                                        <li class="disabled"><a>...</a></li>
+                                    <% } %>
+                                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                                        <% if (i == current) { %>
+                                            <li class="active"><a><%= i %></a></li>
+                                        <% } else { %>
+                                            <li><a href="/api/policy/policy/<%= i %>"><%= i %></a></li>
+                                        <% } %>
+                                        <% if (i == Number(current) + 4 && i < pages) { %>
+                                            <li class="disabled"><a>...</a></li>
+                                        <% } %>
+                                    <% } %>
+                                    <% if (current == pages) { %>
+                                        <li class="disabled"><a>Last</a></li>
+                                    <% } else { %>
+                                        <li><a href="/api/policy/policy/<%= pages %>">Last</a></li>
+                                    <% } %>
+                                </ul>
+                            <% } %>
+                        </tbody>
+                </table>
+            </div>
+            <%}%>
+<br>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Application</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../public/css/style.css">
+</head>
+<body>
+    
+        <header id="header">
+            <nav>
+                <div class="container">
+                    <div class="text-center">
+                        <a href="/" class="nav-brand text-dark">User Management System</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+<main id="site-main">
+    <div class="container">
+        <div class="box-nav d-flex justify-between">
+            <a href="/add-user" class="border-shadow">
+                <span class="text-gradient">New User <i class="fas fa-user"></i></span>
+            </a>
+        </div>
+
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>S.no</th>
+                        <th>policy_number</th>
+                        <th>email</th>
+                        <th>gender</th>
+                        <th>firstname</th>
+                        <th>city</th>
+                        <th>phone</th>
+                        <th>address</th>
+                        <th>state</th>
+                        <th>zip</th>
+                        <th>dob</th>
+                        <th>Applicant_ID</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i = 0; i < data.length; i++) { %>
+                        <tr>
+                            <td ><%= i+1%></td>
+                            <td><%= data[i].policy_number%></td>
+                            <td><%= data[i].email%></td>
+                            <td><%= data[i].gender%></td>
+                            <td><%= data[i].firstname%></td>
+                            <td><%= data[i].city%></td>
+                            <td><%= data[i].phone%></td>
+                            <td><%= data[i].address%></td>
+                            <td><%= data[i].state%></td>
+                            <td><%= data[i].zip%></td>
+                            <td><%= data[i].dob%></td>
+                            <td><%= data[i].Applicant_ID%></td>
+                            <td>
+                                <a  class="btn border-shadow update">
+                                    <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+                                </a>
+                                <a class="btn border-shadow delete" >
+                                    <span class="text-gradient"><i class="fas fa-times"></i></span>
+                                </a>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+    </div>
+</main>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script src="/js/index.js"></script>
+</body>
+</html> -->
